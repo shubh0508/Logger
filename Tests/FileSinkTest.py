@@ -2,7 +2,7 @@ from modules.Logger.LogData import LogData
 from modules.Enum.Levels import Levels
 from modules.Sink.FileSink import FileSink
 
-ldata = LogData(Levels.INFO, 'abc', 'efg')
+ldata = LogData(Levels.INFO, 'abc', ['efg', 'ijk'])
 print('ldata', ldata)
 
 DB_SINK_CONFIGURATIONS = {'append' : True, 'filePath' : 'logger.logs'}

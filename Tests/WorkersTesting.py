@@ -4,30 +4,36 @@ from modules.Sink.FileSink import FileSink
 from modules.Queues.SharedBaseQueue import SharedBaseQueue
 from modules.Workers.BaseWorker import BaseWorker
 from modules.Logger.NetBankingLogger import NetBankingLogger
+from modules.Workers.NetBankingLogINFOWorker import NetBankingLogINFOWorker
 
 ldata = LogData(Levels.INFO, 'abc', 'efg')
 print('ldata', ldata)
 
 nLogger = NetBankingLogger()
 
-nLogger.info('mesg1', ['adffffa','fads'])
-nLogger.info('mesg2', ['adffffa','fads'])
-nLogger.info('mesg3', ['adffffa','fads'])
-
-q = nLogger._Logger__getQueue()
-print(q.get().getAllData())
-
+nLogger.info('mesg11', ['adffffa','fads'])
+nLogger.info('mesg21', ['adffffa','fads'])
+nLogger.info('mesg31', ['adffffa','fads'])
 
 
 DB_SINK_CONFIGURATIONS = {'append' : True, 'filePath' : 'logger.logs'}
 sink = FileSink(DB_SINK_CONFIGURATIONS)
 
 #net banking queue configuration
-configuration = {'queueName' : 'netBankingLogs'}
+configuration = {'queueName' : 'netBankingLogInfoQueue'}
 SBQ = SharedBaseQueue(configuration['queueName'])
 print("number of queues: ", SBQ.getCurrentNumberOfQueues())
 task_queue = SBQ.getQueue()
 worker_name = 'NetBankingWorker'
 
-netBankingWorker =  BaseWorker(task_queue, sink, worker_name)
+netBankingWorker =  NetBankingLogINFOWorker()
 netBankingWorker.start()
+
+
+#the worker picks these up itself
+nLogger.info('mesg11', ['adffffa','fads'])
+nLogger.info('mesg13', ['adffffa','fads'])
+nLogger.info('mesg14', ['adffffa','fads'])
+
+
+#thus the worker is running as expected

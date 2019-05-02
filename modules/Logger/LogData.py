@@ -11,7 +11,7 @@ class LogData():
 		level : Levels,
 		messageName : str,
 		messageContent = dict(),
-		tsFormat = 'str'):
+		tsFormat = '%Y-%m-%d %H:%M:%S'):
 
 		self.__level = level
 		self.__messageName = messageName

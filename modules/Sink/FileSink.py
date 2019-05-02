@@ -11,7 +11,7 @@ class FileSink(AbstractSink):
 	CONST_DEFULT_LOG_FILE = 'tmp/logger.log'
 
 	def __init__(self, configuration):
-		super(FileSink, self).__init__(configuration)
+		# super(FileSink, self).__init__(configuration)
 		self.__configuration = configuration
 
 		if self.__checkConfiguration() == False :
@@ -50,7 +50,7 @@ class FileSink(AbstractSink):
 
 	def getFilePath(self):
 
-		path = 'tmp.log'
+		path = '/tmp/tmp.log'
 		if self.__filePath is not None:
 			path = self.__filePath
 

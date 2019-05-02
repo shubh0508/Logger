@@ -3,7 +3,7 @@ import sys
 from multiprocessing import Queue, Process
 from modules.Logger.LogData import LogData
 from modules.Sink.AbstractSink import AbstractSink
-from multiprocessing import Process
+from modules.Queues.SharedBaseQueue import SharedBaseQueue
 
 class BaseWorker(Process):
 
@@ -20,15 +20,22 @@ class BaseWorker(Process):
 	Thus leaving the specific detail of the queues
 	"""
 
-	def __init__(self, task_queue : Queue, sink : AbstractSink, workerName : str):
+	def __init__(self, taskQueueName : str, sink : AbstractSink, workerName : str):
 		Process.__init__(self)
-		self.__task_queue = task_queue
 		self.__sink = sink
 		self.__workerName = workerName
 
+		## Queue Manager needs to be implemented for this
+		self.__SBQ = SharedBaseQueue(taskQueueName)
+		self.__taskQueue = self.__getQueue()
+
+	def __getQueue(self, queueNumber = -1):
+		if queueNumber == -1:
+			return self.__SBQ.getQueue()
+		return self.__SBQ.getQueue(queueNumber)
 
 	def getTaskQueue(self):
-		return self.__task_queue
+		return self.__taskQueue
 
 	## block pop from the task queue
 	def getTask(self):
@@ -40,7 +47,7 @@ class BaseWorker(Process):
 
 	## worker specific function
 	def processTask(self, nextTask):
-		# print("task processed at worker : ", self.getWorkerName(), nextTask.getAllData())
+		print("task processed at worker : ", self.getWorkerName(), nextTask.getAllData())
 		self.__sink.logData(nextTask)
         #raise NotImplementedError("processTask not implemented for the worker")
 

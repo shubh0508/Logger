@@ -9,8 +9,18 @@ class NetBankingLogger(Logger):
 	def __init__(self, arg = []):
 
 		self.__configuration = self.getConfigurationFromSettings()
+		self.__checkConfiguration()
+		# print('__configuration', self.__configuration)
+
 		super(NetBankingLogger, self).__init__(self.__configuration)
 
+	def __checkConfiguration(self):
+
+		# assert('queueName' in self.__configuration), 'queue name not found in configuration'
+		# assert('workerName' in self.__configuration), 'worker name not found in configuration'
+		## and many more assertion to be included
+
+		return True
 
 	def getConfigurationFromSettings(self):
 

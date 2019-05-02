@@ -8,7 +8,7 @@ class LevelLogger():
 	Queue for logger is fetch from configuration while constructing the logger
 	The logs are the then push using
 	"""
-	def __init__(self, level, configuration):
+	def __init__(self, level : Levels, configuration):
 
 		self.__configuration = configuration
 		self.__checkConfiguration()
@@ -21,6 +21,7 @@ class LevelLogger():
 		if configuration['threadModel'] == 'MULTI':
 			numberOfQueues = configuration['numberOfQueues']
 
+		## Queue Manager needs to be implemented for this
 		self.__SBQ = SharedBaseQueue(self.queueName, self.numberOfQueues)
 		self.__logQueue = self.__getQueue()
 
@@ -30,7 +31,9 @@ class LevelLogger():
 		assert('workerName' in self.__configuration), 'worker name not found in configuration'
 		## and many more assertion to be included
 
-	def __getQueue(self, queueNumber = 0):
+	def __getQueue(self, queueNumber = -1):
+		if queueNumber == -1:
+			return self.__SBQ.getQueue()
 		return self.__SBQ.getQueue(queueNumber)
 
 	def pushLog(self, logData):

@@ -10,10 +10,10 @@ class Database:
 		self.__initializeConnetion()
 
 	def __checkConfig(self):
-		assert (host in self.__config), "host not found in database configuration"
-		assert (username in self.__config), "username not found in database configuration"
-		assert (database in self.__config), "database not found in database configuration"
-		assert (password in self.__config), "password not found in database configuration"
+		assert ('host' in self.__config), "host not found in database configuration"
+		assert ('username' in self.__config), "username not found in database configuration"
+		assert ('database' in self.__config), "database not found in database configuration"
+		assert ('password' in self.__config), "password not found in database configuration"
 
 	def __initializeConnetion(self):
 

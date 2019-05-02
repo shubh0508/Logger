@@ -38,7 +38,7 @@ class Logger():
 		# print(level.value, self.getConfigurationForLevel(level))
 
 		if level.value not in self.__levelLogger:
-			levelLogger = LevelLogger(level.value, self.getConfigurationForLevel(level))
+			levelLogger = LevelLogger(level.INFO, self.getConfigurationForLevel(level))
 			self.__levelLogger[level.value] = levelLogger
 
 		return self.__levelLogger[level.value]

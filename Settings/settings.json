@@ -3,11 +3,11 @@
         "info": {
             "queueName": "netBankingLogInfoQueue",
             "workerName": "netBankingLogInfoWorker",
-            "tsFormat": "dd\u00ad-mm-\u00adyyyy\u00ad-hh\u00ad-mm\u00ad-ss",
+            "tsFormat": "%Y-%m-%d-%H-%M-%S",
             "sinkType": "FILE",
             "sinkConfig": {
                 "append": true,
-                "filePath": "/tmp/loggerInfo.logs"
+                "filePath": "loggerInfo.logs"
             },
             "threadModel": "SINGLE",
             "writeMode": "SYNC"
@@ -17,7 +17,7 @@
             "workerName": "netBankingLogErrorWorker",
             "numberOfQueues": 5,
             "numberOfWorkers": 5,
-            "tsFormat": "dd\u00ad:mm:\u00adyyyy\u00ad hh\u00ad:mm\u00ad:ss",
+            "tsFormat": "%Y-%m-%d %H:%M:%S",
             "sinkType": "DB",
             "sinkConfig": {
                 "database_configurations": {
