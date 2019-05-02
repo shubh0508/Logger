@@ -1,0 +1,34 @@
+{
+    "netBankingLogger": {
+        "info": {
+            "queueName": "netBankingLogInfoQueue",
+            "workerName": "netBankingLogInfoWorker",
+            "tsFormat": "%Y-%m-%d-%H-%M-%S",
+            "sinkType": "FILE",
+            "sinkConfig": {
+                "append": true,
+                "filePath": "loggerInfo.logs"
+            },
+            "threadModel": "SINGLE",
+            "writeMode": "SYNC"
+        },
+        "error": {
+            "queueName": "netBankingLogErrorQueue",
+            "workerName": "netBankingLogErrorWorker",
+            "numberOfQueues": 5,
+            "numberOfWorkers": 5,
+            "tsFormat": "%Y-%m-%d %H:%M:%S",
+            "sinkType": "DB",
+            "sinkConfig": {
+                "database_configurations": {
+                    "host": "127.0.0.1",
+                    "username": "shubh",
+                    "password": "",
+                    "database": "logdb"
+                }
+            },
+            "threadModel": "MULTI",
+            "writeMode": "ASYNC"
+        }
+    }
+}
