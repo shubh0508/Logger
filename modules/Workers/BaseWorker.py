@@ -1,11 +1,11 @@
 import atexit
+import sys
 from multiprocessing import Queue, Process
 from modules.Logger.LogData import LogData
 from modules.Sink.AbstractSink import AbstractSink
+from multiprocessing import Process
 
 class BaseWorker(Process):
-# class BaseWorker():
-
 
 	"""Parent class for other workers. The other workers
 	need to set the queue and execute consume operation.
@@ -40,34 +40,28 @@ class BaseWorker(Process):
 
 	## worker specific function
 	def processTask(self, nextTask):
-		print("task processed", nextTask.getAllData())
+		# print("task processed at worker : ", self.getWorkerName(), nextTask.getAllData())
 		self.__sink.logData(nextTask)
         #raise NotImplementedError("processTask not implemented for the worker")
 
 
     ## adding hooks for getting the reason of worker stopped
 	@atexit.register
-	def addShutDownHook(self):
-		print(self.getWorkerName(), " Worker Exited successfully!!! ", sys.exc_info()[0])
+	def addShutDownHook():
+		print(" Worker Exited successfully!!! ")
 
 
 	def run(self):
 		print(self.getWorkerName(), " Worker started running successfully!!!")
 
-		try:
+		while True:
+			nextTask = self.getTask()
+			if nextTask is None:
+				# Poison pill
+				print(self.getWorkerName(), " Worker stopped successfully from poison pill!!!")
+				self.addShutDownHook()
+				break
 
-			while True:
-				nextTask = self.getTask()
-				if nextTask is None:
-					# Poison pill
-					print(self.getWorkerName(), " Worker stopped successfully from poison pill!!!")
-					self.addShutDownHook()
-					break
-
-				self.processTask(nextTask)
-
-		except Exception as error:
-			print("BaseWorker stopped due to error : ", error)
-			self.addShutDownHook()
+			self.processTask(nextTask)
 
 		return

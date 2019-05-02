@@ -7,37 +7,40 @@ class LogData():
 	# contains timestamp, level, messageName, messageContent
 
 
-	def __init__ (self, level : Levels, messageName : str, messageContent = dict()):
-		self._level = level
-		self._messageName = messageName
-		self._messageContent  = messageContent
-		self._logTime = datetime.today()
+	def __init__(self,
+		level : Levels,
+		messageName : str,
+		messageContent = dict(),
+		tsFormat = 'str'):
+
+		self.__level = level
+		self.__messageName = messageName
+		self.__messageContent  = messageContent
+		self.__logTime = datetime.today()
+		self.__tsFormat = tsFormat
 
 	def getLevel(self):
-		return self._level
+		return self.__level.value
 
 	def getMessageName(self):
-		return self._messageName
+		return self.__messageName
 
 	def getMessageContent(self):
-		return self._messageContent
+		return self.__messageContent
 
 	# two formats supported i.e. str or timestamp
 	# timestamp will be returned if format is any other than str
-	def getLogTime(self, format = 'str'):
+	def getLogTime(self):
 
-		if format == 'str':
-			return self._logTime.strftime('%Y-%m-%d %H:%M:%S')
-		else :
-			return self._logTime
+		return self.__logTime.strftime(self.__tsFormat)
 
 	def getAllData(self):
 
 		data = {}
-		data['level'] = self.getLevel().value
+		data['level'] = self.getLevel()
 		data['messageName'] = self.getMessageName()
 		data['messageContent'] = self.getMessageContent()
-		data['logTime'] = self.getLogTime('str')
+		data['logTime'] = self.getLogTime()
 
 		return data
 

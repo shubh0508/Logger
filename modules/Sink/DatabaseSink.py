@@ -1,5 +1,6 @@
+import json
 from modules.Sink.AbstractSink import AbstractSink
-from modules.Databases.Database import Database
+from modules.Sink.Database import Database
 from modules.Logger.LogData import LogData
 
 class DatabaseSink(AbstractSink):
@@ -19,10 +20,10 @@ class DatabaseSink(AbstractSink):
 	def logData(self, data : LogData):
 		dataDict = data.getAllData();
 
-		sql = "INSERT INTO log_table (level, mmessage_namespace, message_content, log_time) \
-			VALUES ('{level}', '{mmessage_namespace}', '{message_content}', '{log_time}')".format(
-				level = dataDict['level'], mmessage_namespace = dataDict['messageName'],
-				message_content = dataDict['messageContent'], log_time = dataDict['logTime'])
+		sql = """INSERT INTO log_table (level, mmessage_namespace, message_content, log_time) \
+			VALUES ('{level}', '{message_namespace}', '{message_content}', '{log_time}')""". \
+			format(level = dataDict['level'], message_namespace = dataDict['messageName'],
+				message_content = json.dumps(dataDict['messageContent']), log_time = dataDict['logTime'])
 
 		# print('sql', sql)
 		self.__DB.executeQuery(sql)

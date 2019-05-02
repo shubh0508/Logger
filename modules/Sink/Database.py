@@ -5,22 +5,15 @@ class Database:
 	def __init__(self, config):
 		self.__config = config
 
-		if self.__checkConfig() == False:
-			raise Exception('Incorrect configuration provided ' + str(config))
-
+		self.__checkConfig()
 		self.__connection = None
-		self.__initializeConnetion
+		self.__initializeConnetion()
 
 	def __checkConfig(self):
-
-		if self.__config is None or \
-		'host' not in self.__config or \
-		'username' not in self.__config or \
-		'database' not in self.__config or \
-		'password' not in self.__config :
-			return False
-
-		return True
+		assert (host in self.__config), "host not found in database configuration"
+		assert (username in self.__config), "username not found in database configuration"
+		assert (database in self.__config), "database not found in database configuration"
+		assert (password in self.__config), "password not found in database configuration"
 
 	def __initializeConnetion(self):
 

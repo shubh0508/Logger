@@ -1,6 +1,7 @@
 from modules.Logger.LogData import LogData
 from modules.Enum.Levels import Levels
 from modules.Queues.SharedBaseQueue import SharedBaseQueue
+from modules.Logger.LevelLogger import LevelLogger
 
 
 class Logger():
@@ -11,45 +12,60 @@ class Logger():
 	def __init__(self, configuration):
 
 		self.__configuration = configuration
-		if 'queueName' not in configuration:
-			raise Exception('Incorrect configuration provided ' + str(configuration))
+		self.__checkConfiguration()
 
-		queueName = configuration['queueName']
-		self.__SBQ = SharedBaseQueue(queueName)
-		self.__logQueue = self.__getQueue()
+		#dictionary for level logger objects
+		self.__levelLogger = {}
 
-	def __getQueue(self, queueNumber = 0):
-		return self.__SBQ.getQueue(queueNumber)
 
-	def log(self, logData : LogData):
+	def __checkConfiguration(self):
 
-		## currently its a blocking put
-		## but it should be put_no_wait with a timeout
-		## based on settings depending on the importance of logs
-		self.__logQueue.put(logData)
+		# assert('queueName' in self.__configuration), 'queue name not found in configuration'
+		# assert('workerName' in self.__configuration), 'worker name not found in configuration'
+		## and many more assertion to be included
+
+		return True
+
+	def getConfigurationForLevel(self, level : Levels):
+
+		assert(level.value in self.__configuration), """settings for level: {level}
+		not found for the current stream""".format(level = level.value)
+
+		return self.__configuration[level.value]
+
+	def getLoggerFromLevel(self, level : Levels):
+
+		# print(level.value, self.getConfigurationForLevel(level))
+
+		if level.value not in self.__levelLogger:
+			levelLogger = LevelLogger(level.value, self.getConfigurationForLevel(level))
+			self.__levelLogger[level.value] = levelLogger
+
+		return self.__levelLogger[level.value]
 
 	def info(self, messageNamespace, messageContent):
-		logLevel = Levels.INFO
-		logData = LogData(logLevel, messageNamespace, messageContent)
-		self.log(logData)
+
+		levelLogger = self.getLoggerFromLevel(Levels.INFO)
+		levelLogger.log(messageNamespace, messageContent)
+		print(messageNamespace, messageContent)
 
 	def debug(self, messageNamespace, messageContent):
-		logLevel = Levels.DEBUG
-		logData = LogData(logLevel, messageNamespace, messageContent)
-		self.log(logData)
+
+		levelLogger = self.getLoggerFromLevel(Levels.DEBUG)
+		levelLogger.log(messageNamespace, messageContent)
 
 	def warn(self, messageNamespace, messageContent):
-		logLevel = Levels.WARN
-		logData = LogData(logLevel, messageNamespace, messageContent)
-		self.log(logData)
+
+		levelLogger = self.getLoggerFromLevel(Levels.WARN)
+		levelLogger.log(messageNamespace, messageContent)
 
 	def error(self, messageNamespace, messageContent):
-		logLevel = Levels.ERROR
-		logData = LogData(logLevel, messageNamespace, messageContent)
-		self.log(logData)
+
+		levelLogger = self.getLoggerFromLevel(Levels.ERROR)
+		levelLogger.log(messageNamespace, messageContent)
 
 	def fatal(self, messageNamespace, messageContent):
-		logLevel = Levels.FATAL
-		logData = LogData(logLevel, messageNamespace, messageContent)
-		self.log(logData)
+
+		levelLogger = self.getLoggerFromLevel(Levels.FATAL)
+		levelLogger.log(messageNamespace, messageContent)
 

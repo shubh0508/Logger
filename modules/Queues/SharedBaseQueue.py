@@ -10,7 +10,7 @@ class SharedBaseQueue:
 	__qDict = dict()
 
 	# const
-	CONST_MAX_QUEUES_ALLOWED = 5
+	CONST_MAX_QUEUES_ALLOWED = 10
 	CONST_MAX_QUEUE_SIZE_ALLOWED = 100
 	CONST_QUEUE_TYPE_LOCAL = 'local_multiprocessing_queue';
 	currentNumberOfQueues = 0
@@ -51,7 +51,7 @@ class SharedBaseQueue:
 			raise Exception('Invalid number of queues : {numberOfQueues}')
 
 		if numberOfQueues > self.CONST_MAX_QUEUES_ALLOWED - self.currentNumberOfQueues:
-			raise Exception("Adding queues will cross the maximum number of queues allowed")
+			raise Exception("Adding queues will cross the maximum number of queues allowed" )
 
 		for i in range(numberOfQueues):
 			self.__qDict[self.queueName].append(self.__getNewQueueInstance())
@@ -77,7 +77,7 @@ class SharedBaseQueue:
 		elif self.currentNumberOfQueues > 0:
 			queueNumber = queueNumber % self.currentNumberOfQueues
 
-		print('queueNumber at getQueue ', queueNumber)
+		# print('queueNumber at getQueue ', queueNumber)
 		queueList = self.__qDict[self.queueName]
 
 		return queueList[queueNumber]

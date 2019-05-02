@@ -1,4 +1,4 @@
-from Logger import Logger
+from modules.Logger.Logger import Logger
 
 class UPILogger(Logger):
 	"""docstring for UPILogger"""

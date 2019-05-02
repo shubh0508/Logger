@@ -1,4 +1,5 @@
 from modules.Logger.Logger import Logger
+from modules.setting import Settings
 
 class NetBankingLogger(Logger):
 	"""docstring for UPILogger"""
@@ -14,7 +15,9 @@ class NetBankingLogger(Logger):
 	def getConfigurationFromSettings(self):
 
 		###getting configurations from settings (to be implemented)
-		#configuration = settings.getSetting(SETTINGS_KEY)
+		settings = Settings()
+		configuration = settings.get(self.SETTINGS_KEY)
+		assert(len(configuration) > 0), 'configurations not found in \
+		settings for key: ' + self.SETTINGS_KEY
 
-		configuration = {'queueName' : 'netBankingLogs'}
 		return configuration

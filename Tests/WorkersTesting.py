@@ -29,7 +29,5 @@ print("number of queues: ", SBQ.getCurrentNumberOfQueues())
 task_queue = SBQ.getQueue()
 worker_name = 'NetBankingWorker'
 
-
-
-
 netBankingWorker =  BaseWorker(task_queue, sink, worker_name)
+netBankingWorker.start()
