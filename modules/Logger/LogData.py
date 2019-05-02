@@ -1,23 +1,23 @@
-# class for Log Data object
-# contains timestamp, level, messageNamespace, messageContent
-
-from Levels import Levels
+from modules.Enum.Levels import Levels
 from datetime import datetime
 
 
 class LogData():
+	# class for Data Type of Log objects
+	# contains timestamp, level, messageName, messageContent
 
-	def __init__ (self, level : Levels, messageNamespace : str, messageContent = dict()):
+
+	def __init__ (self, level : Levels, messageName : str, messageContent = dict()):
 		self._level = level
-		self._messageNamespace = messageNamespace
+		self._messageName = messageName
 		self._messageContent  = messageContent
 		self._logTime = datetime.today()
 
 	def getLevel(self):
 		return self._level
 
-	def getMessageNamespace(self):
-		return self._messageNamespace
+	def getMessageName(self):
+		return self._messageName
 
 	def getMessageContent(self):
 		return self._messageContent
@@ -34,9 +34,9 @@ class LogData():
 	def getAllData(self):
 
 		data = {}
-		data['level'] = self._level.value
-		data['messageNamespace'] = self._messageNamespace
-		data['messageContent'] = self._messageContent
+		data['level'] = self.getLevel().value
+		data['messageName'] = self.getMessageName()
+		data['messageContent'] = self.getMessageContent()
 		data['logTime'] = self.getLogTime('str')
 
 		return data

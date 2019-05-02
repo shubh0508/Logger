@@ -68,5 +68,5 @@ class Database:
 		except (Exception, psycopg2.Error) as error:
 			raise Exception('SQL QUERY Exception ' + str(error))
 
-		print('Result', query, rowsModified)
+		# print('Result', query, rowsModified)
 		return rowsModified
